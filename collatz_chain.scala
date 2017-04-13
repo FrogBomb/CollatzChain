@@ -11,13 +11,14 @@ object Collatz {
     def apply(x: Int) = x / 2
   }
   def tripplePlusOne(x: Int) = 3*x + 1
-  val colatzStep = halveEvens orElse PartialFunction[Int, Int](tripplePlusOne _)
+  val collatzStep = halveEvens orElse PartialFunction[Int, Int](tripplePlusOne _)
 
+  def collatzChain[T: IntSingleOrList](start: T) : List[Int] = {
     return start match {
-        case x: Int => colatzChain(List(x))
+        case x: Int => collatzChain(List(x))
         case xs: List[Int] => xs match {
           case 1 :: tail => 1 :: tail
-          case head :: _ => colatzChain(colatzStep(head) :: xs)
+          case head :: _ => collatzChain(collatzStep(head) :: xs)
           case _ => List[Int]()
         }
       }
@@ -25,6 +26,8 @@ object Collatz {
 
   def main(args: Array[String]){
     args match {
+      case Array(h, _*) => println(collatzChain(h toInt))
+      case _ => println(collatzChain(27))
     }
   }
 }
